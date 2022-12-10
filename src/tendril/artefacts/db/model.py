@@ -3,10 +3,11 @@
 from sqlalchemy import Column
 from sqlalchemy import String
 from sqlalchemy import Integer
+from sqlalchemy_json import mutable_json_type
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.ext.mutable import MutableDict
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
+from sqlalchemy.ext.declarative import declared_attr
 
 
 from tendril.utils.db import DeclBase
@@ -18,10 +19,13 @@ from tendril.utils import log
 logger = log.get_logger(__name__, log.DEFAULT)
 
 
-class Artefact(DeclBase, BaseMixin, TimestampMixin, UserMixin):
+class ArtefactModel(DeclBase, BaseMixin, TimestampMixin, UserMixin):
     _type_name = "artefact"
     type = Column(String(50), nullable=False)
-    logs = relationship("ArtefactLogEntry", back_populates="artefact")
+
+    @declared_attr
+    def logs(cls):
+        return relationship("ArtefactLogEntry", back_populates="artefact")
 
     __mapper_args__ = {
         "polymorphic_identity": _type_name,
@@ -29,9 +33,9 @@ class Artefact(DeclBase, BaseMixin, TimestampMixin, UserMixin):
     }
 
 
-class ArtefactLogEntry(DeclBase, BaseMixin, TimestampMixin, UserMixin):
+class ArtefactLogEntryModel(DeclBase, BaseMixin, TimestampMixin, UserMixin):
     action = Column(String(50), nullable=False)
-    reference = Column(MutableDict.as_mutable(JSONB))
+    reference = Column(mutable_json_type(dbtype=JSONB))
     artefact_id = Column(Integer(),
                          ForeignKey('Artefact.id'), nullable=False)
     artefact = relationship("Artefact", back_populates="logs")
