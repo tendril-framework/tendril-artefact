@@ -25,7 +25,7 @@ class ArtefactModel(DeclBase, BaseMixin, TimestampMixin, UserMixin):
 
     @declared_attr
     def logs(cls):
-        return relationship("ArtefactLogEntry", back_populates="artefact")
+        return relationship("ArtefactLogEntryModel", back_populates="artefact")
 
     __mapper_args__ = {
         "polymorphic_identity": _type_name,
@@ -38,4 +38,4 @@ class ArtefactLogEntryModel(DeclBase, BaseMixin, TimestampMixin, UserMixin):
     reference = Column(mutable_json_type(dbtype=JSONB))
     artefact_id = Column(Integer(),
                          ForeignKey('Artefact.id'), nullable=False)
-    artefact = relationship("Artefact", back_populates="logs")
+    artefact = relationship("ArtefactModel", back_populates="logs")
