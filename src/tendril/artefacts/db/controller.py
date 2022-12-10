@@ -26,3 +26,8 @@ def create_artefact(type, session=None):
 def register_artefact(artefact: Artefact, session=None):
     session.add(artefact)
     return artefact
+
+
+@with_db
+def creare_artefact_log_entry(artefact_id, action, reference=None, session=None):
+    pass

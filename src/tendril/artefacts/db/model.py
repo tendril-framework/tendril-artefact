@@ -21,7 +21,7 @@ logger = log.get_logger(__name__, log.DEFAULT)
 
 class ArtefactModel(DeclBase, BaseMixin, TimestampMixin, UserMixin):
     _type_name = "artefact"
-    type = Column(String(50), nullable=False)
+    type = Column(String(50), nullable=False, default=_type_name)
 
     @declared_attr
     def logs(cls):
