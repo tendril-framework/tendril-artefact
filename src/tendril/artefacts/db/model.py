@@ -1,8 +1,12 @@
 
 
+from collections import namedtuple
+
+
 from sqlalchemy import Column
 from sqlalchemy import String
 from sqlalchemy import Integer
+from sqlalchemy import Boolean
 from sqlalchemy_json import mutable_json_type
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy import ForeignKey
@@ -19,9 +23,25 @@ from tendril.utils import log
 logger = log.get_logger(__name__, log.DEFAULT)
 
 
+ArtefactSpec = namedtuple('ArtefactSpec',
+                          'label type access required unique',
+                          defaults=("Member", False, False))
+
+
 class ArtefactModel(DeclBase, BaseMixin, TimestampMixin, UserMixin):
     _type_name = "artefact"
     type = Column(String(50), nullable=False, default=_type_name)
+    title = Column(String(255), nullable=True)
+    label = Column(String(50), nullable=True)
+    active = Column(Boolean, nullable=False, default=True)
+
+    @declared_attr
+    def interest_id(cls):
+        return Column(Integer, ForeignKey('Interest.id'))
+
+    @declared_attr
+    def interest(cls):
+        return relationship('InterestModel', back_populates="artefacts")
 
     @declared_attr
     def logs(cls):
