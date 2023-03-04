@@ -1,8 +1,5 @@
 
 
-from collections import namedtuple
-
-
 from sqlalchemy import Column
 from sqlalchemy import String
 from sqlalchemy import Integer
@@ -21,11 +18,6 @@ from tendril.authn.db.mixins import UserMixin
 
 from tendril.utils import log
 logger = log.get_logger(__name__, log.DEFAULT)
-
-
-ArtefactSpec = namedtuple('ArtefactSpec',
-                          'label type access required unique',
-                          defaults=("Member", False, False))
 
 
 class ArtefactModel(DeclBase, BaseMixin, TimestampMixin, UserMixin):
