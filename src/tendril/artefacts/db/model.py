@@ -31,9 +31,9 @@ class ArtefactModel(DeclBase, BaseMixin, TimestampMixin, UserMixin):
     def interest_id(cls):
         return Column(Integer, ForeignKey('Interest.id'))
 
-    @declared_attr
-    def interest(cls):
-        return relationship('InterestModel', back_populates="artefacts")
+    # @declared_attr
+    # def interest(cls):
+    #     return relationship('InterestModel', back_populates="artefacts")
 
     @declared_attr
     def logs(cls):
