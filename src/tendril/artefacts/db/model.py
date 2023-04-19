@@ -27,9 +27,9 @@ class ArtefactModel(DeclBase, BaseMixin, TimestampMixin, UserMixin):
     label = Column(String(50), nullable=True)
     active = Column(Boolean, nullable=False, default=True)
 
-    @declared_attr
-    def interest_id(cls):
-        return Column(Integer, ForeignKey('Interest.id'))
+    # @declared_attr
+    # def interest_id(cls):
+    #     return Column(Integer, ForeignKey('Interest.id'))
 
     # @declared_attr
     # def interest(cls):
