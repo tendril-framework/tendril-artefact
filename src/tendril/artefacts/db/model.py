@@ -10,7 +10,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declared_attr
 
-
+from tendril.db.mixins.interests import InterestMixin
 from tendril.utils.db import DeclBase
 from tendril.utils.db import BaseMixin
 from tendril.utils.db import TimestampMixin
@@ -20,7 +20,8 @@ from tendril.utils import log
 logger = log.get_logger(__name__, log.DEFAULT)
 
 
-class ArtefactModel(DeclBase, BaseMixin, TimestampMixin, UserMixin):
+class ArtefactModel(DeclBase, BaseMixin, TimestampMixin,
+                    UserMixin, InterestMixin):
     _type_name = "artefact"
     type = Column(String(50), nullable=False, default=_type_name)
     title = Column(String(255), nullable=True)
